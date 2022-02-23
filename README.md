@@ -1,0 +1,2 @@
+# cuality
+Python projects analysis
