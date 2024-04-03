@@ -38,7 +38,11 @@ class Project:
                 table.append(
                     [
                         pkg.path.name,
-                        str(pkg.migrations.relative_to(self.path)) if pkg.migrations else ""
+                        (
+                            str(pkg.migrations.relative_to(self.path))
+                            if pkg.migrations
+                            else ""
+                        ),
                     ]
                 )
 
@@ -67,7 +71,7 @@ def analyze(folder: Path) -> Optional[Project]:
             return project
 
 
-def main(args: Args) -> None:
+def main(path: Path) -> None:
     project_folder = Path(args.folder).resolve()
     project = analyze(project_folder)
     print(project)
@@ -75,9 +79,9 @@ def main(args: Args) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        prog='Python project analyzer',
-        description='Parses given project folder to get some useful insides',
+        prog="Python project analyzer",
+        description="Parses given project folder to get some useful insides",
     )
-    parser.add_argument('folder')
+    parser.add_argument("folder")
     args = Args()
-    main(parser.parse_args(namespace=args))
+    main(Path(parser.parse_args(namespace=args).folder).resolve())

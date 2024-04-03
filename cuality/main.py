@@ -2,6 +2,7 @@ import click
 import os
 
 from cuality.feature_delivery import main as feature_delivery
+from cuality.analyze import main as analyze
 
 
 @click.group()
@@ -24,6 +25,18 @@ def statistics(path: click.Path, trunk: str):
         f"Analyzing feature delivery statistics for repository at {path} targeting trunk branch '{trunk}'..."
     )
     feature_delivery(path, trunk)
+
+
+@cli.command(help="Parses given project folder to get some useful insides")
+@click.option(
+    "--path",
+    "-p",
+    type=click.Path(exists=True),
+    default=os.getcwd(),
+    help="Path to the Git repository.",
+)
+def analyze(path: click.Path):
+    analyze(path)
 
 
 if __name__ == "__main__":
