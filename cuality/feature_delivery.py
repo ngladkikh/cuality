@@ -19,7 +19,9 @@ def get_merge_commits(branch_name: str) -> dict[str, list[str]]:
     return {commit.split()[0]: commit.split()[1:] for commit in merges}
 
 
-def get_branch_points(merge_commits: dict[str, list[str]], trunk_branch: str) -> dict[str, str]:
+def get_branch_points(
+    merge_commits: dict[str, list[str]], trunk_branch: str
+) -> dict[str, str]:
     """Finds branch points for each merge commit."""
     branch_points = {}
     for merge_commit, parents in merge_commits.items():
