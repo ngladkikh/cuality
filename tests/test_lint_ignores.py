@@ -54,11 +54,11 @@ def add_file(folder: Path, name: str) -> Path:
     return file
 
 
-def test_ignore_lines_in_file_parsing(python_test_file):
-    stat = IgnoreLinesInFile.from_file(python_test_file)
+def test_ignore_lines_in_file_parsing(python_test_file, tmp_path):
+    stat = IgnoreLinesInFile.from_file(python_test_file, tmp_path)
     assert stat.total_lines == 5
     assert stat.total_ignores == 1
-    assert stat.file is python_test_file
+    assert stat.file == Path("root.py")
 
 
 @pytest.fixture

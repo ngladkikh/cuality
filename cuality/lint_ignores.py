@@ -17,6 +17,9 @@ class IgnoreLinesInFile:
     total_lines: int = 0
     total_ignores: int = 0
 
+    def set_root(self, root_path: Path) -> None:
+        self.file = self.file.resolve().relative_to(root_path.resolve())
+
     def parse_line(self, line: str) -> None:
         line = line.strip()
         if line in ("", "\n"):
@@ -27,8 +30,11 @@ class IgnoreLinesInFile:
             self.total_ignores += 1
 
     @classmethod
-    def from_file(cls, file: Path) -> "IgnoreLinesInFile":
+    def from_file(
+        cls, file: Path, root_folder: Path | None = None
+    ) -> "IgnoreLinesInFile":
         file_stat = IgnoreLinesInFile(file)
+        file_stat.set_root(root_folder)
         with file.open() as f:
             while True:
                 line = f.readline()
@@ -52,7 +58,7 @@ class IgnoreLinesStat:
 
     def parse_project_folder(self, path: Path) -> None:
         for python_file in self.python_files(path):
-            file_stat = IgnoreLinesInFile.from_file(python_file)
+            file_stat = IgnoreLinesInFile.from_file(python_file, path)
             self.add_ignores(file_stat)
 
     def save_stat_to_csv(self, path: Path) -> None:
