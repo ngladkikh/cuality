@@ -1,8 +1,11 @@
+from pathlib import Path
+
 import click
 import os
 
 from cuality.feature_delivery import main as feature_delivery
 from cuality.analyze import main as analyze
+from cuality.lint_ignores import lint_ignores
 
 
 @click.group()
@@ -37,6 +40,14 @@ def statistics(path: click.Path, trunk: str):
 )
 def analyze(path: click.Path):
     analyze(path)
+
+
+@cli.command(help="Calculates linters ignore lines stat to overall lines")
+@click.argument("project", type=click.Path(exists=True, path_type=Path))
+@click.option("--output", "-o", default="ignore_stat.csv", help="Output file name")
+def ignore_stat(project: click.Path, output: str) -> None:
+    output = Path(output)
+    lint_ignores(project, output)
 
 
 if __name__ == "__main__":

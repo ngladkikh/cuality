@@ -19,6 +19,7 @@ isort = "^5.13.2"
 mypy = "^1.9.0"
 typing-extensions = "^4.10.0"
 toml = "^0.10.2"
+pytest = "^8.1.1"
 
 [build-system]
 requires = ["poetry-core"]
